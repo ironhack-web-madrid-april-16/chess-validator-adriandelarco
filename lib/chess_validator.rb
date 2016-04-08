@@ -1,3 +1,7 @@
+require "pry"
+require "colorize"
+require './print.rb'
+
 class Board
 	attr_reader :array_board
 
@@ -34,6 +38,7 @@ class Validator
 		array_movements = IO.read(file).split("\n")     
 		array_movements.each do |coord|
 			coord = coord.split(" ")
+			Print.coord(coord[0],coord[1])
 			move_letters(coord[0],coord[1])
 		end
 	end
@@ -49,28 +54,28 @@ class Validator
 
 		piece_to_move = check_status(origin_coord)
 		if piece_to_move != nil && check_target(target_cord) == true
-
 			case piece_to_move
-			when :bR || :wR
-				puts Rook.new.move_valid(origin_coord, target_cord)
-			when :bB || :wB
-				puts Bishop.new.move_valid(origin_coord, target_cord)
-			when :bQ || :wQ
-				puts Queen.new.move_valid(origin_coord, target_cord)
-			when :bK || :wK
-				puts King.new.move_valid(origin_coord, target_cord)
+
+			when :bR, :wR
+				Rook.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
+			when :bB, :wB
+				Bishop.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
+			when :bQ, :wQ
+				Queen.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
+			when :bK, :wK
+				King.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
 			when :bP
-				puts Pawn.new.move_valid(origin_coord, target_cord, "black")
+				Pawn.new.move_valid(origin_coord, target_cord, "black") ? Print.legal : Print.ilegal ;
 			when :wP
-				puts Pawn.new.move_valid(origin_coord, target_cord, "white")
-			when :bN || :wN
-				puts Horse.new.move_valid(origin_coord, target_cord)
+				Pawn.new.move_valid(origin_coord, target_cord, "white") ? Print.legal : Print.ilegal ;
+			when :bN, :wN
+				Horse.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
 			end
 
+		elsif piece_to_move == nil
+			Print.empty
 		else
-
-			puts false
-			
+			Print.occupied
 		end
 		
 	end
@@ -91,12 +96,9 @@ class Validator
 			if coord[0] == letter
 				coord_converted[1] = index
 			end
-			
 		end
 		coord = [coord_converted[0],coord_converted[1]]
-		coord
 	end
-
 
 end
 
@@ -104,9 +106,9 @@ class Rook
 
 	def move_valid(origin_coord, target_cord)
 		if origin_coord[0] == target_cord[0] || origin_coord[1] == target_cord[1]
-			true
+			true.to_s.upcase.green
 		else
-			false
+			false.to_s.red
 		end
 	end
 
@@ -171,8 +173,6 @@ class Pawn
 			else
 				false
 			end
-
-
 		end
 		
 	end
@@ -190,6 +190,8 @@ class Horse
 			b.abs == 1 ? true : false;
 		elsif b.abs == 2
 			a.abs == 1 ? true : false;
+		else
+			false
 		end
 	end
 
@@ -200,8 +202,8 @@ end
 
 board1 = Board.new
 complex_board = [
-			[:bK,:nil,:nil,:nil,:nil,:bB,:nil,:nil],
-			[:nil,:nil,:nil,:nil,:nil,:bP,:nil,:nil],
+			[:bK,nil,nil,nil,nil,:bB,nil,nil],
+			[nil,nil,nil,nil,nil,:bP,nil,nil],
 			[nil,:bP,:wR,nil,:wB,nil,:bN,nil],
 			[:wN,nil,:bP,:bR,nil,nil,nil,:wP],
 			[nil,nil,nil,nil,:wK,:wQ,nil,:wP],
@@ -211,8 +213,9 @@ complex_board = [
 		]
 board1.create_board(complex_board)
 
-#board1.move([1,0],[2,1])
+
 validator_for_board1 = Validator.new(board1)
+#validator_for_board1.move([1,0],[2,1])
 validator_for_board1.check_movements_txt("complex_moves.txt")
-#board1.move_letters("a7","b6")
-#board1.converter("c7")
+#validator_for_board1.move_letters("e4","d8")
+#validator_for_board1.converter("c7")
