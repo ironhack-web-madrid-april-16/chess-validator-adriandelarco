@@ -43,8 +43,6 @@ class Validator
 		origin_coord = converter(origin_coord)
 		target_cord = converter(target_cord)
 		move(origin_coord, target_cord)
-		#puts origin_coord 
-		#puts target_cord
 	end
 	
 	def move(origin_coord, target_cord)
@@ -71,7 +69,7 @@ class Validator
 
 		else
 
-			puts "false"
+			puts false
 			
 		end
 		
