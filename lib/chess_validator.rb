@@ -32,18 +32,16 @@ class Validator
 
 	def initialize(board)
 		@board = board
+		@array_results = []
+	end
+
+	def save_to_txt(array,file)
+		name = "#{file}_results.txt"
+		IO.write(name,array.join("\n"))    
 	end
 
 	def check_movements_txt(file)
-		array_movements = IO.read(file).split("\n")     
-		array_movements.each do |coord|
-			coord = coord.split(" ")
-			Print.coord(coord[0],coord[1])
-			move_letters(coord[0],coord[1])
-		end
-	end
-
-	def check_movements_txt(file)
+		array_results = []
 		array_movements = IO.read(file).split("\n")     
 		array_movements.each do |coord|
 			coord = coord.split(" ")
@@ -51,14 +49,19 @@ class Validator
 			result = move_letters(coord[0],coord[1])
 			if result == true
 				Print.legal
+				array_results.push("LEGAL")
 			elsif result == false
 				Print.ilegal
+				array_results.push("ILEGAL")
 			elsif result == "empty"
 				Print.empty
+				array_results.push("EMPTY")
 			elsif result == "occupied"
 				Print.occupied
+				array_results.push("OCCUPIED")
 			end
 		end
+		save_to_txt(array_results,file)
 	end
 
 	def move_letters(origin_coord, target_cord)
@@ -73,8 +76,8 @@ class Validator
 
 		piece_to_move = check_status(origin_coord)
 		if piece_to_move != nil && check_target(target_cord) == true
-			case piece_to_move
 
+			case piece_to_move
 			when :bR, :wR
 				Rook.new.move_valid(origin_coord, target_cord)
 			when :bB, :wB
