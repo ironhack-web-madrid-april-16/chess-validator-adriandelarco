@@ -127,9 +127,9 @@ class Rook
 
 	def move_valid(origin_coord, target_cord)
 		if origin_coord[0] == target_cord[0] || origin_coord[1] == target_cord[1]
-			true.to_s.upcase.green
+			true
 		else
-			false.to_s.red
+			false
 		end
 	end
 
@@ -217,8 +217,6 @@ class Horse
 	end
 
 end
-
-
 
 
 board1 = Board.new
