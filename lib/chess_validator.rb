@@ -43,11 +43,30 @@ class Validator
 		end
 	end
 
+	def check_movements_txt(file)
+		array_movements = IO.read(file).split("\n")     
+		array_movements.each do |coord|
+			coord = coord.split(" ")
+			Print.coord(coord[0],coord[1])
+			result = move_letters(coord[0],coord[1])
+			if result == true
+				Print.legal
+			elsif result == false
+				Print.ilegal
+			elsif result == "empty"
+				Print.empty
+			elsif result == "occupied"
+				Print.occupied
+			end
+		end
+	end
+
 	def move_letters(origin_coord, target_cord)
 
 		origin_coord = converter(origin_coord)
 		target_cord = converter(target_cord)
 		move(origin_coord, target_cord)
+
 	end
 	
 	def move(origin_coord, target_cord)
@@ -57,25 +76,25 @@ class Validator
 			case piece_to_move
 
 			when :bR, :wR
-				Rook.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
+				Rook.new.move_valid(origin_coord, target_cord)
 			when :bB, :wB
-				Bishop.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
+				Bishop.new.move_valid(origin_coord, target_cord) 
 			when :bQ, :wQ
-				Queen.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
+				Queen.new.move_valid(origin_coord, target_cord)
 			when :bK, :wK
-				King.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
+				King.new.move_valid(origin_coord, target_cord)
 			when :bP
-				Pawn.new.move_valid(origin_coord, target_cord, "black") ? Print.legal : Print.ilegal ;
+				Pawn.new.move_valid(origin_coord, target_cord, "black") 
 			when :wP
-				Pawn.new.move_valid(origin_coord, target_cord, "white") ? Print.legal : Print.ilegal ;
+				Pawn.new.move_valid(origin_coord, target_cord, "white") 
 			when :bN, :wN
-				Horse.new.move_valid(origin_coord, target_cord) ? Print.legal : Print.ilegal ;
+				Horse.new.move_valid(origin_coord, target_cord) 
 			end
 
 		elsif piece_to_move == nil
-			Print.empty
+			result = "empty"
 		else
-			Print.occupied
+			result = "occupied"
 		end
 		
 	end

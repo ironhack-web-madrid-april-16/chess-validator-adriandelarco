@@ -20,4 +20,8 @@ module Print
 		print "#{orig_coord} => #{target_coord}: ".blue
 	end
 
+	def Print.a
+		puts ""
+	end
+
 end
