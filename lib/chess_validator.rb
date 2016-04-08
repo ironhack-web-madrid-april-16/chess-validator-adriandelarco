@@ -80,11 +80,7 @@ class Validator
 	end
 
 	def check_target(target_cord)
-
-		if @board.array_board[target_cord[0]][target_cord[1]] == nil
-			true
-		end
-
+		@board.array_board[target_cord[0]][target_cord[1]] == nil ? true : false;
 	end
 
 	def converter(coord)
@@ -121,12 +117,7 @@ class Bishop
 	def move_valid(origin_coord, target_cord)
 		a = origin_coord[0] - target_cord[0]
 		b = origin_coord[1] - target_cord[1]
-
-		if a.abs == b.abs
-			true
-		else
-			false
-		end
+		a.abs == b.abs ? true : false;
 	end
 
 end
@@ -167,27 +158,21 @@ class Pawn
 		
 		case color
 		when "white"
-			if origin_coord[0] == 6
-				direction = 2
-			else
-				direction = 1
-			end
+			origin_coord[0] == 6 ? direction = 2 : direction = 1;
 			if origin_coord[0] - target_cord[0] <= direction && origin_coord[1] == target_cord[1]
 				true
 			else
 				false
 			end
 		when "black"
-			if origin_coord[0] == 1
-				direction = -2
-			else
-				direction = -1
-			end
+			origin_coord[0] == 1 ? direction = -2 : direction = -1;
 			if origin_coord[0] - target_cord[0] >= direction && origin_coord[1] == target_cord[1]
 				true
 			else
 				false
 			end
+
+
 		end
 		
 	end
@@ -202,17 +187,9 @@ class Horse
 		b = origin_coord[1] - target_cord[1]
 
 		if a.abs == 2
-			if b.abs == 1
-				true
-			else
-				false
-			end
+			b.abs == 1 ? true : false;
 		elsif b.abs == 2
-			if a.abs == 1
-				true
-			else
-				false
-			end
+			a.abs == 1 ? true : false;
 		end
 	end
 
