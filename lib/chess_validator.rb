@@ -32,7 +32,6 @@ class Validator
 
 	def initialize(board)
 		@board = board
-		@array_results = []
 	end
 
 	def save_to_txt(array,file)
